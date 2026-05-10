@@ -1,0 +1,163 @@
+---
+import * as profile from "../content/profile.md";
+const { Content } = profile;
+const { name, github, atcoder, links } = profile.frontmatter;
+
+const githubUsername = github.split("/").pop();
+const avatarUrl = `${github}.png`;
+---
+
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <title>{name} - Portfolio</title>
+    <style>
+      :root {
+        --dark-indigo: #0b162a;
+        --indigo: #1e3a8a;
+        --text-white: #f8fafc;
+        --text-gray: #94a3b8;
+      }
+      body {
+        background-color: var(--dark-indigo);
+        color: var(--text-white);
+        font-family: "Helvetica Neue", Arial, sans-serif;
+        line-height: 1.6;
+        margin: 0;
+        padding: 0;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+        padding: 4rem 2rem;
+      }
+      header {
+        text-align: center;
+        margin-bottom: 4rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1.5rem;
+      }
+      .avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 3px solid var(--indigo);
+      }
+      h1 {
+        font-size: 2.5rem;
+        margin: 0;
+      }
+
+      /* リンク共通設定 */
+      .links-container {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 12px;
+        margin-top: 1.5rem;
+      }
+
+      .btn-link {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        background: rgba(255, 255, 255, 0.05);
+        padding: 10px 20px;
+        border-radius: 25px;
+        text-decoration: none;
+        color: var(--text-white);
+        font-size: 0.95rem;
+        transition: all 0.2s;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+
+      .btn-link:hover {
+        background: rgba(255, 255, 255, 0.15);
+        transform: translateY(-2px);
+        border-color: rgba(255, 255, 255, 0.3);
+      }
+
+      /* Markdownの中身のスタイル */
+      .prose :global(h2) {
+        border-left: 4px solid var(--indigo);
+        padding-left: 1rem;
+        margin-top: 3rem;
+        color: #60a5fa;
+      }
+      .prose :global(li) {
+        background: rgba(255, 255, 255, 0.05);
+        margin-bottom: 0.5rem;
+        padding: 1rem;
+        border-radius: 8px;
+      }
+
+      /* 改行用スタイル */
+      .link-break {
+        flex-basis: 100%;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.1);
+        margin: 20px 0;
+      }
+
+      .links-section {
+        margin-top: 5rem;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <img src={avatarUrl} alt={name} class="avatar" />
+        <h1>{name}</h1>
+        <div class="links-container">
+          <a href={github} class="btn-link" target="_blank">
+            <span>GitHub (@{githubUsername})</span>
+          </a>
+          <a href={`https://atcoder.jp/users/${atcoder}`} target="_blank">
+            <img
+              src={`https://img.shields.io/endpoint?url=https%3A%2F%2Fatcoder-badges.now.sh%2Fapi%2Fatcoder%2Fjson%2F${atcoder}`}
+              alt="AtCoder Rating"
+              height="34"
+            />
+          </a>
+        </div>
+      </header>
+
+      <main class="prose">
+        <Content />
+      </main>
+
+      <footer class="links-section">
+        <h3>More Links</h3>
+        <div class="links-container">
+          {
+            links &&
+              links.map((link) =>
+                link.label === "break" ? (
+                  <div class="link-break" />
+                ) : (
+                  <a
+                    href={link.url}
+                    class="btn-link"
+                    target="_blank"
+                    style={`border-color: ${link.color}44`}
+                  >
+                    <span style={`color: ${link.color}`}>●</span>
+                    {link.label}
+                  </a>
+                )
+              )
+          }
+        </div>
+        <p style="margin-top: 4rem; font-size: 0.8rem; color: var(--text-gray);">
+          &copy; {new Date().getFullYear()} {name}
+        </p>
+      </footer>
+    </div>
+  </body>
+</html>

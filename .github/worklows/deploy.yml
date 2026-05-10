@@ -1,0 +1,21 @@
+﻿name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [ main ] # メインブランチにpushされたら実行
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Install, build, and upload with Astro
+        uses: withastro/action@v3
+        # ここで自動的に npm install と npm run build が行われます
